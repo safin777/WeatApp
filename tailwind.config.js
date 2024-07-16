@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
-  
-  darkMode:'class',
+
+  darkMode: 'class',
   theme: {
     extend: {
       container: {
@@ -10,7 +10,8 @@ export default {
         padding: '1.25rem',
       },
       colors: {
-        primary: '#00D991',
+        body: '#1D1E28',
+        light: '#fff',
       },
     },
   },
