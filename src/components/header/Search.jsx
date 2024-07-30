@@ -1,5 +1,22 @@
 import SearchLogo from '../../assets/search.svg'
+import { useContext } from 'react'
+import { LocationContext } from '../../context'
+import { getLocationByName } from '../../data/location-data'
+import { useDebounce } from '../../hooks'
+
 export default function Search() {
+  const { setSelectedLocation } = useContext(LocationContext)
+
+  const doSearch = useDebounce((term) => {
+    console.log('searching for', term)
+    const fetchedLocation = getLocationByName(term)
+    setSelectedLocation({ ...fetchedLocation })
+  }, 500)
+
+  const handleChange = (e) => {
+    const value = e.target.value
+    doSearch(value)
+  }
   return (
     <>
       <form action="#">
@@ -8,6 +25,7 @@ export default function Search() {
             className="w-full text-xs text-white bg-transparent border-none outline-none placeholder:text-white md:text-base"
             type="search"
             placeholder="Search Location"
+            onChange={handleChange}
             required
           />
           <button type="submit">

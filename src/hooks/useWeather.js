@@ -1,4 +1,5 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { LocationContext } from '../context'
 
 const useWeather = () => {
   const [weatherData, setWeatherData] = useState({
@@ -23,19 +24,22 @@ const useWeather = () => {
   })
 
   const [error, setError] = useState(null)
+  const { selectedLocation } = useContext(LocationContext)
 
   //call api
 
   const fetchWeatherData = async (latitude, longitude) => {
     try {
-      setLoading({ 
+      setLoading({
         ...loading,
         state: true,
         message: 'Fetching weather data...',
-       })
+      })
 
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_APP_WEATHER_API_KEY}&units=metric`,
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${
+          import.meta.env.VITE_APP_WEATHER_API_KEY
+        }&units=metric`,
       )
 
       if (!response.ok) {
@@ -64,24 +68,29 @@ const useWeather = () => {
     } catch (err) {
       setError(err)
     } finally {
-      setLoading({ 
+      setLoading({
         ...loading,
         state: false,
         message: '',
-       })
+      })
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading({
-        ...loading,
-        state: true,
-        message: 'Fetching location...',
-    }) //reset loading state
-     navigator.geolocation.getCurrentPosition(function(position){
+      ...loading,
+      state: true,
+      message: 'Fetching location...',
+    })
+    if (selectedLocation.latitude && selectedLocation.longitude) {
+      fetchWeatherData(selectedLocation.latitude, selectedLocation.longitude)
+    } else {
+      navigator.geolocation.getCurrentPosition(function (position) {
         fetchWeatherData(position.coords.latitude, position.coords.longitude)
-     })
-  },[])
+      })
+    }
+    //reset loading state
+  }, [selectedLocation.latitude, selectedLocation.longitude])
 
   return { weatherData, loading, error }
 }

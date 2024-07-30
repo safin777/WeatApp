@@ -4,7 +4,7 @@ import HumidityImg from '../../assets/icons/humidity.svg'
 import CloudImg from '../../assets/cloud.svg'
 import WindImg from '../../assets/icons/wind.svg'
 import { useContext } from 'react'
-import WeatherContext from '../../context'
+import {WeatherContext} from '../../context'
 
 export default function WeatherCondition() {
   const { weatherData } = useContext(WeatherContext)

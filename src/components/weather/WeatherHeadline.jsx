@@ -6,7 +6,7 @@ import SunnyIcon from '../../assets/sunny.svg'
 import ThunderstormIcon from '../../assets/thunder.svg'
 import PinImg from '../../assets/pin.svg'
 import { useContext } from 'react'
-import WeatherContext from '../../context'
+import {WeatherContext} from '../../context'
 import { getFormattedDate } from '../../utils/date-utils'
 
 export default function WeatherHeadline() {

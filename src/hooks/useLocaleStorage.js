@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react'
 
 //add to storate
 
-const useLocaleStorage = (key, initialValue) => {
+const useLocaleStorage = (storageKey, defaultValue) => {
   const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem(key)) ?? initialValue,
+    JSON.parse(localStorage.getItem(storageKey)) ?? defaultValue,
   )
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(value))
+  }, [value, storageKey])
+
+  return [value, setValue]
 }
 
-//get from locale storage
+export default useLocaleStorage
